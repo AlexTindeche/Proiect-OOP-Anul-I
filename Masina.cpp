@@ -1,5 +1,5 @@
 #include "Masina.h"
-
+#include "common.h"
 
 Masina::Masina (string m, string d, string mar, int n, string t, bool a, int c, string cat)
 {
@@ -14,41 +14,65 @@ Masina::Masina (string m, string d, string mar, int n, string t, bool a, int c, 
     rezervat = false;
 }
 
-istream& operator>> (istream& in, Masina& m)
+Masina::Masina (const Masina& m)
+{
+    this->marca = m.marca;
+    this->depozit = m.depozit;
+    this->model = m.model;
+    this->nr_loc = m.nr_loc;
+    this->transmisie = m.transmisie;
+    this->aer_conditionat = m.aer_conditionat;
+    this->consum = m.consum;
+    this->categorie = m.categorie;
+    this->rezervat = m.rezervat;
+}
+
+istream& operator>> (istream& in, Masina& masina)
 {
     string s;
-    cout << "Depozitul in care se afla: ";
-    getline(in, s);
-    m.depozit = s;
+    int ok = 0;
+    while (ok == 0)
+    {
+        cout << "Depozitul in care se afla: ";
+        getline(in, s);
+        for (int i = 0; i < dep.size(); i++)
+            if (s == dep[i].getLocatie())
+                ok = 1;
+        if (ok == 0)
+        { cout << "Depozitul nu exista, instroduceti din nou datele.\n"; }
+    }
+    masina.depozit = s;
     cout << "Marca: ";
     getline(in, s);
-    m.marca = s;
+    masina.marca = s;
     cout << "Model: ";
     getline(in, s);
-    m.model = s;
+    masina.model = s;
     cout << "Categorie: ";
     getline(in, s);
-    m.categorie = s;
+    masina.categorie = s;
     cout << "Nr locuri: ";
-    in >> m.nr_loc;
+    in >> masina.nr_loc;
     cout << "Transmisie: ";
-    in >> m.transmisie;
+    in >> masina.transmisie;
     cout << "Are sau nu aer conditionat: (d/n) ";
     string input;
     in >> input;
-    if(input == "d")
-        m.aer_conditionat = true;
+    if (input == "d")
+        masina.aer_conditionat = true;
     else
-        m.aer_conditionat = false;
+        masina.aer_conditionat = false;
     cout << "Consum (l/100km): ";
-    in >> m.consum;
+    in >> masina.consum;
     in.get();
+    return in;
 }
 
 ostream& operator<< (ostream& out, const Masina& m)
 {
     out << "Depozit: " << m.depozit;
-    out << "\nMarca: " << m.marca << "\nModel: " << m.model << "\nCategorie: " << m.categorie << "\nNr locuri: " << m.nr_loc
+    out << "\nMarca: " << m.marca << "\nModel: " << m.model << "\nCategorie: " << m.categorie << "\nNr locuri: "
+        << m.nr_loc
         << "\nTransmisie: " << m.transmisie << "\nConsum: " << m.consum << "l/100km" << "\nAer conditionat: ";
     if (m.aer_conditionat)
         out << "Da\n";
@@ -61,117 +85,45 @@ ostream& operator<< (ostream& out, const Masina& m)
     return out;
 }
 
-bool operator == (Masina &m1, Masina &m2)
+bool operator== (Masina& m1, Masina& m2)
 {
-    if(m1.getMarca() != m2.getMarca())
+    if (m1.getMarca() != m2.getMarca())
         return false;
-    if(m1.getModel() != m2.getModel())
+    if (m1.getModel() != m2.getModel())
         return false;
-    if(m1.getDepozit() != m2.getDepozit())
+    if (m1.getDepozit() != m2.getDepozit())
         return false;
-    if(m1.getNr_loc() != m2.getNr_loc())
+    if (m1.getNr_loc() != m2.getNr_loc())
         return false;
-    if(m1.getTransmisie() != m2.getTransmisie())
+    if (m1.getTransmisie() != m2.getTransmisie())
         return false;
-    if(m1.getAer_conditionat() != m2.getAer_conditionat())
+    if (m1.getAer_conditionat() != m2.getAer_conditionat())
         return false;
-    if(m1.getConsum() != m2.getConsum())
+    if (m1.getConsum() != m2.getConsum())
         return false;
     return true;
 }
 
-void Masina::modifica_rezervare ()
+void Masina::rezerva ()
 {
-    cout << "Masina selectata";
-    if(rezervat)
-    {
-        cout << " este rezervata, doriti sa i se modifice statusul la a fi libera? (d/n) ";
-        string input;
-        cin >> input;
-        if(input == "d")
-            rezervat = false;
-        cout << "Gata";
-    }
+    if (!rezervat)
+        rezervat = true;
     else
-    {
-        cout << " nu este rezervata, doriti sa i se modifice statusul la a fi rezervata? (d/n) ";
-        string input;
-        cin >> input;
-        if(input == "d")
-            rezervat = true;
-        cout << "Gata";
-    }
+        cout << "\nMasina este deja rezervata!";
 }
 
-//void Masina::modifica_depozit()
-//{
-//    cout
-//            << "1. Sterge ultimul depozit\n"
-//            << "2. Adauga depozit\n"
-//            << "3. Elimina toate depozitele inregistrate\n"
-//            << "4. Elimina un anumit depozit\n"
-//            << "Alege optiunea introducand numarul corespunzator optiunii: ";
-//    int input;
-//    cin >> input;
-//    cin.get();
-//    cout << '\n';
-//    switch(input)
-//    {
-//        case 1:
-//            depozit.pop_back();
-//            break;
-//        case 2:
-//        {
-//            string s;
-//            cout << "Numele depozitului: ";
-//            getline(cin, s);
-//            for(int i = 0; i < depozit.size(); i++)
-//            {
-//                if (depozit[i] == s)
-//                {
-//                    cout << "Depozitul a fost adaugat deja!";
-//                    break;
-//                }
-//            }
-//            depozit.push_back(s);
-//            break;
-//        }
-//        case 3:
-//            depozit.clear();
-//            break;
-//        case 4:
-//        {
-//            string s;
-//            cout << "Numele depozitului: ";
-//            getline(cin, s);
-//            int ok = 0;
-//            for(int i = 0; i < depozit.size(); i++)
-//            {
-//                if (depozit[i] == s)
-//                {
-//                    depozit.erase(depozit.begin() + i);
-//                    ok = 1;
-//                }
-//            }
-//            if(ok == 0)
-//                cout << "Masina nu se afla in depozitul cerut!";
-//            break;
-//        }
-//    }
-//}
+void Masina::elibereaza ()
+{
+    if (rezervat)
+        rezervat = false;
+    else
+        cout << "\nMasina este deja libera!";
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
+void Masina::modifica_depozit (string s)
+{
+    depozit = s;
+}
 
 
 // in caz de nu merge supraincarcarea operatorului de citire
@@ -194,7 +146,7 @@ void Masina::citire ()
     cout << "Are sau nu aer conditionat: (d/n) ";
     string input;
     cin >> input;
-    if(input == "d")
+    if (input == "d")
         aer_conditionat = true;
     else
         aer_conditionat = false;

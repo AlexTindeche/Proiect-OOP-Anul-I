@@ -5,9 +5,11 @@
 #include <string.h>
 #include <vector>
 
+
 using namespace std;
 
-class Masina{
+class Masina
+{
     string marca;
     string depozit;
     string model;
@@ -18,21 +20,51 @@ class Masina{
     string categorie;
     bool rezervat;
 public:
-    Masina(string m = "", string d = "", string mar = "", int n = 0, string t = "", bool a = false, int c = 0, string cat = "");
-    string getModel(){return model;};
-    string getDepozit(){return depozit;};
-    string getMarca(){return marca;};
-    int getNr_loc(){return nr_loc;};
-    string getTransmisie(){return transmisie;};
-    bool getAer_conditionat(){return aer_conditionat;};
-    int getConsum(){return consum;};
-    string getCategorie(){return categorie;};
-    void citire();
-    void modifica_rezervare();
-    //void modifica_depozit();
-    friend istream& operator>>(istream &, Masina &);
-    friend ostream& operator<<(ostream &, const Masina &);
-    friend bool operator == (Masina &, Masina &);
+    Masina (string m = "", string d = "", string mar = "", int n = 0, string t = "", bool a = false, int c = 0,
+            string cat = "");
+
+    Masina (const Masina& m);
+
+    string getModel ()
+    { return model; };
+
+    string getDepozit ()
+    { return depozit; };
+
+    string getMarca ()
+    { return marca; };
+
+    int getNr_loc ()
+    { return nr_loc; };
+
+    string getTransmisie ()
+    { return transmisie; };
+
+    bool getAer_conditionat ()
+    { return aer_conditionat; };
+
+    int getConsum ()
+    { return consum; };
+
+    string getCategorie ()
+    { return categorie; };
+
+    bool este_rezervata ()
+    { return rezervat; };
+
+    void citire ();
+
+    void rezerva ();
+
+    void elibereaza ();
+
+    void modifica_depozit (string s);
+
+    friend istream& operator>> (istream&, Masina&);
+
+    friend ostream& operator<< (ostream&, const Masina&);
+
+    friend bool operator== (Masina&, Masina&);
 };
 
 

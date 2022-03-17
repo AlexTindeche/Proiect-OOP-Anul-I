@@ -4,4 +4,4 @@ project(Poriect_OOP_Anul_I)
 set(CMAKE_CXX_STANDARD 14)
 
 add_executable(Poriect_OOP_Anul_I
-        main.cpp Masina.cpp Masina.h Utilizator.cpp Utilizator.h)
+        main.cpp Masina.cpp Masina.h Utilizator.cpp Utilizator.h Depozit.cpp Depozit.h common.h)
