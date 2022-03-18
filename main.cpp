@@ -442,6 +442,32 @@ int main ()
                 dep.push_back(d);
                 break;
             }
+            case 11:
+            {
+                if (m.size() == 0)
+                {
+                    cout << "Nu exista masini in lista\n";
+                    Sleep(2000);
+                    break;
+                }
+                string marca, model;
+                cout << "Marca: ";
+                getline(cin, marca);
+                cout << "Model: ";
+                getline(cin, model);
+                int ok = 0;
+                for(int i = 0; i < m.size(); i++)
+                    if(marca == m[i].getMarca() and model == m[i].getModel())
+                        cout << m[i] << "\n\n\n", ok = 1;
+                if(ok == 0)
+                    cout << "Masina cautata nu exista!";
+                string input;
+                cout << "\n\nDoriti sa reveniti la meniul principal? (d/n) ";
+                getline(cin, input);
+                if (input == "n")
+                    return 0;
+                break;
+            }
         }
         system("cls");
         optiune = meniu();
